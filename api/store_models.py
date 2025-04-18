@@ -1,0 +1,29 @@
+from django.db import models
+
+class Products(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    product_image = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class Payment(models.Model):
+    name = models.CharField(max_length=100)  # User's name
+    email = models.EmailField()
+    address = models.TextField()
+    payment_method = models.CharField(max_length=20, choices=[
+        ('gcash', 'Gcash'),
+        ('maya', 'Maya'),
+        ('paypal', 'PayPal')
+    ])
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    products = models.JSONField()  # Store the list of products as JSON
+    receipt_image = models.ImageField(upload_to='receipts/', null=True, blank=True)  # New field for receipt image
+    created_at = models.DateTimeField(auto_now_add=True)  # Transaction date
+
+    def __str__(self):
+        return f"Payment by {self.name} via {self.payment_method}"

@@ -1,0 +1,6 @@
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "address": "123 Main St, Cityville",
+  "payment_method": "paypal"
+}
