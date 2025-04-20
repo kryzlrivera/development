@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .store_models import Products, Payment
+from .store_models import Products, CartItem, Payment
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_image = serializers.ImageField(required=False, allow_null=True)
+    product_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Products
@@ -11,14 +11,55 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_product_image(self, obj):
         request = self.context.get('request')
         if obj.product_image and hasattr(obj.product_image, 'url'):
-            url = request.build_absolute_uri(obj.product_image.url)
-            print(f"Returning image URL: {url}")
-            return url
+            return request.build_absolute_uri(obj.product_image.url)
         return None
+
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ['id', 'name', 'description', 'product_image', 'price', 'stock', 'created_at']
+        read_only_fields = ['created_at']
+
+    def validate(self, data):
+        # Validate that the product exists and has sufficient stock
+        product_id = self.context.get('request').data.get('product_id')
+        if not product_id:
+            raise serializers.ValidationError("Product ID is required")
+        try:
+            product = Products.objects.get(id=product_id)
+        except Products.DoesNotExist:
+            raise serializers.ValidationError(f"Product with ID {product_id} does not exist")
+
+        # Check if provided data matches the product
+        if data['name'] != product.name:
+            raise serializers.ValidationError("Name does not match the product")
+        if data['description'] != product.description:
+            raise serializers.ValidationError("Description does not match the product")
+        if data['price'] != product.price:
+            raise serializers.ValidationError("Price does not match the product")
+        if data['stock'] != product.stock:
+            raise serializers.ValidationError("Stock does not match the product")
+
+        # Validate stock
+        if product.stock < 1:
+            raise serializers.ValidationError(f"Product {product.name} is out of stock")
+
+        return data
+
+    def validate_price(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Price must be positive")
+        return value
+
+    def validate_stock(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Stock must be a non-negative integer")
+        return value
+
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    receipt_image = serializers.ImageField(required=False, allow_null=True)  # New field for receipt image
+    receipt_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Payment

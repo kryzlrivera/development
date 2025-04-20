@@ -1,6 +1,6 @@
 from django.db import models
 from .exam_models import Chat
-from .store_models import Products, Payment
+from .store_models import Products, CartItem, Payment
 
 class Contact(models.Model):
     first_name = models.CharField(max_length=50)

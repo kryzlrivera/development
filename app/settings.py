@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 "http://127.0.0.1:5500",
 "http://localhost:3000",
-
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'PATCH', 'POST', 'PUT']
 # Application definition
 
 INSTALLED_APPS = [
