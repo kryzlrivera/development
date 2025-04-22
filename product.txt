@@ -1,9 +1,0 @@
-{
-        
-        "name": "iPhone 14",
-        "description": "Apple iPhone 14 with A15 Bionic chip, 6.1-inch Super Retina XDR display, dual 12MP cameras, and 128GB storage. Supports 5G and iOS 16.",
-        "product_image": null
-        "price": "799.99",
-        "stock": 48,
-        "created_at": "2025-04-17T07:06:22.026535Z"
-    }
