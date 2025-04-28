@@ -8,11 +8,14 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Products
         fields = ['id', 'name', 'description', 'product_image', 'price', 'stock', 'created_at']
 
-    def get_product_image(self, obj):
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
         request = self.context.get('request')
-        if obj.product_image:
-            return request.build_absolute_uri(obj.product_image.url)
-        return None
+        if instance.product_image and request:
+            representation['product_image'] = request.build_absolute_uri(instance.product_image.url)
+        else:
+            representation['product_image'] = None
+        return representation
 
 class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,7 +24,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at']
 
     def validate(self, data):
-        # Validate that the product exists and has sufficient stock
         product_id = self.context.get('request').data.get('product_id')
         if not product_id:
             raise serializers.ValidationError("Product ID is required")
@@ -30,7 +32,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         except Products.DoesNotExist:
             raise serializers.ValidationError(f"Product with ID {product_id} does not exist")
 
-        # Check if provided data matches the product
         if data['name'] != product.name:
             raise serializers.ValidationError("Name does not match the product")
         if data['description'] != product.description:
@@ -40,7 +41,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         if data['stock'] != product.stock:
             raise serializers.ValidationError("Stock does not match the product")
 
-        # Validate stock
         if product.stock < 1:
             raise serializers.ValidationError(f"Product {product.name} is out of stock")
 
@@ -62,6 +62,15 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = ['id', 'name', 'email', 'address', 'payment_method', 'total_amount', 'products', 'receipt_image', 'created_at']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request')
+        if instance.receipt_image and request:
+            representation['receipt_image'] = request.build_absolute_uri(instance.receipt_image.url)
+        else:
+            representation['receipt_image'] = None
+        return representation
 
     def validate_products(self, value):
         if not isinstance(value, list):
