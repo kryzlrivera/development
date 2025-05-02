@@ -10,9 +10,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        request = self.context.get('request')
-        if instance.product_image and request:
-            representation['product_image'] = request.build_absolute_uri(instance.product_image.url)
+        if instance.product_image:
+            # Manually construct the URL with the port
+            base_url = "http://172.17.100.14:3332"
+            relative_url = instance.product_image.url
+            representation['product_image'] = f"{base_url}{relative_url}"
         else:
             representation['product_image'] = None
         return representation
@@ -65,9 +67,10 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        request = self.context.get('request')
-        if instance.receipt_image and request:
-            representation['receipt_image'] = request.build_absolute_uri(instance.receipt_image.url)
+        if instance.receipt_image:
+            # Manually construct the full URL with desired host and port
+            image_url = f"http://172.17.100.14:3332{instance.receipt_image.url}"
+            representation['receipt_image'] = image_url
         else:
             representation['receipt_image'] = None
         return representation

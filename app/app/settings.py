@@ -29,7 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 "http://127.0.0.1:8500",
-"http://localhost:8500",
 "http://localhost:3000",
 "http://127.0.0.1:5500",
 "http://127.0.0.1:3332",
@@ -147,7 +146,7 @@ STATIC_URL = 'static/'
 
 # Media settings
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/martinito3/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
