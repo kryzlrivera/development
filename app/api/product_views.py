@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .store_models import Products, CartItem, Payment
-from .store_serializers import ProductSerializer, CartItemSerializer, PaymentSerializer
+from .product_models import Products, CartItem, Payment
+from .product_serializers import ProductSerializer, CartItemSerializer, PaymentSerializer
 from django.shortcuts import render
 
 class ProductViewSet(viewsets.ModelViewSet):

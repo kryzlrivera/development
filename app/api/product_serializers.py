@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .store_models import Products, CartItem, Payment
+from .product_models import Products, CartItem, Payment
 
 class ProductSerializer(serializers.ModelSerializer):
     product_image = serializers.ImageField(required=False, allow_null=True)
@@ -12,7 +12,7 @@ class ProductSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         if instance.product_image:
             # Manually construct the URL with the port
-            base_url = "http://172.17.100.14:3332"
+            base_url = "http://172.17.100.14:3329"
             relative_url = instance.product_image.url
             representation['product_image'] = f"{base_url}{relative_url}"
         else:
@@ -69,7 +69,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         if instance.receipt_image:
             # Manually construct the full URL with desired host and port
-            image_url = f"http://172.17.100.14:3332{instance.receipt_image.url}"
+            image_url = f"http://172.17.100.14:3329{instance.receipt_image.url}"
             representation['receipt_image'] = image_url
         else:
             representation['receipt_image'] = None

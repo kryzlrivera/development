@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .store_models import Products, CartItem, Payment
+from .product_models import Products, CartItem, Payment
 
 @admin.register(Products)
 class ProductAdmin(admin.ModelAdmin):
