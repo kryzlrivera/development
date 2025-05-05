@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .product_models import Products, CartItem, Payment
 
+
+
 @admin.register(Products)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'stock', 'created_at')
@@ -12,7 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
     fieldsets = (
         (None, {
-            'fields': ('name', 'description', 'price', 'stock', 'product_image')
+            'fields': ('name', 'description', 'price', 'stock', 'p_image')
         }),
         ('Metadata', {
             'fields': ('created_at',),
@@ -37,7 +39,7 @@ class CartItemAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
     fieldsets = (
         (None, {
-            'fields': ('name', 'description', 'price', 'stock', 'product_image')
+            'fields': ('name', 'description', 'price', 'stock', 'p_image')
         }),
         ('Metadata', {
              'fields': ('created_at',),

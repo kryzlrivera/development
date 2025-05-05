@@ -2,27 +2,27 @@ from rest_framework import serializers
 from .product_models import Products, CartItem, Payment
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_image = serializers.ImageField(required=False, allow_null=True)
+    p_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Products
-        fields = ['id', 'name', 'description', 'product_image', 'price', 'stock', 'created_at']
+        fields = ['id', 'name', 'description', 'p_image', 'price', 'stock', 'created_at']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        if instance.product_image:
+        if instance.p_image:
             # Manually construct the URL with the port
             base_url = "http://172.17.100.14:3329"
-            relative_url = instance.product_image.url
-            representation['product_image'] = f"{base_url}{relative_url}"
+            relative_url = instance.p_image.url
+            representation['p_image'] = f"{base_url}{relative_url}"
         else:
-            representation['product_image'] = None
+            representation['p_image'] = None
         return representation
 
 class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
-        fields = ['id', 'name', 'description', 'product_image', 'price', 'stock', 'created_at']
+        fields = ['id', 'name', 'description', 'p_image', 'price', 'stock', 'created_at']
         read_only_fields = ['created_at']
 
     def validate(self, data):
@@ -59,20 +59,20 @@ class CartItemSerializer(serializers.ModelSerializer):
         return value
 
 class PaymentSerializer(serializers.ModelSerializer):
-    receipt_image = serializers.ImageField(required=False, allow_null=True)
+    avatar_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Payment
-        fields = ['id', 'name', 'email', 'address', 'payment_method', 'total_amount', 'products', 'receipt_image', 'created_at']
+        fields = ['id', 'name', 'email', 'address', 'payment_method', 'total_amount', 'products', 'avatar_image', 'created_at']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        if instance.receipt_image:
+        if instance.avatar_image:
             # Manually construct the full URL with desired host and port
-            image_url = f"http://172.17.100.14:3329{instance.receipt_image.url}"
-            representation['receipt_image'] = image_url
+            image_url = f"http://172.17.100.14:3329{instance.avatar_image.url}"
+            representation['avatar_image'] = image_url
         else:
-            representation['receipt_image'] = None
+            representation['avatar_image'] = None
         return representation
 
     def validate_products(self, value):

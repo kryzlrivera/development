@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import HelloWorld, Students, ContactListView
 from .exam_views import ChatView
-from .store_views import ProductViewSet, PaymentViewSet
+from .product_views import ProductViewSet, PaymentViewSet
 
 urlpatterns = [
     path('hello/', HelloWorld.as_view(), name='hello_world'),
