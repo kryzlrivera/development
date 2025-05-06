@@ -31,8 +31,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 "http://127.0.0.1:8100",
 "http://localhost:3000",
 "http://127.0.0.1:5500",
-"http://127.0.0.1:3329",
-"http://172.17.100.14:3329",
+"http://127.0.0.1:3342",
+"http://172.17.100.14:3342",
 "http://172.17.100.14:8100",
 "http://0.0.0.0:8100",
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'PATCH', 'POST', 'PUT']
