@@ -12,7 +12,7 @@ class ProductSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         if instance.p_image:
             # Manually construct the URL with the port
-            base_url = "http://172.17.100.14:3342"
+            base_url = "http://172.17.100.14:3338"
             relative_url = instance.p_image.url
             representation['p_image'] = f"{base_url}{relative_url}"
         else:
@@ -69,7 +69,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         if instance.avatar_image:
             # Manually construct the full URL with desired host and port
-            image_url = f"http://172.17.100.14:3342{instance.avatar_image.url}"
+            image_url = f"http://172.17.100.14:3338{instance.avatar_image.url}"
             representation['avatar_image'] = image_url
         else:
             representation['avatar_image'] = None
